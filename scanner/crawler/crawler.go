@@ -1,7 +1,6 @@
 package crawler
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,11 +11,12 @@ var supportedFormats = map[string]bool{
 	".mkv": true,
 }
 
-func Crawl(path string) error {
+func Crawl(path string) (error, []string) {
+	var results []string
 	entries, err := os.ReadDir(path)
 
 	if err != nil {
-		return err
+		return err, results
 	}
 
 	for _, entry := range entries {
@@ -26,17 +26,18 @@ func Crawl(path string) error {
 			_, err := os.ReadDir(newPath)
 
 			if err != nil {
-				return err
+				return err, results
 			}
 
-			Crawl(newPath)
+			_, subResults := Crawl(newPath)
+			results = append(results, subResults...)
 		} else {
 			ext := strings.ToLower(filepath.Ext(entry.Name()))
 			if supportedFormats[ext] {
-				fmt.Println(entry.Name())
+				results = append(results, entry.Name())
 			}
 		}
 	}
 
-	return nil
+	return nil, results
 }

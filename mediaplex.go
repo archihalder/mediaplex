@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"mediaplex/scanner/crawler"
+	"mediaplex/scanner"
 	"os"
 )
 
@@ -18,8 +18,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := crawler.Crawl(*path); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+	err, results := scanner.Scan(*path)
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error scanning path: %v\n", err)
 		os.Exit(1)
+	} else {
+		for _, movie := range results {
+			fmt.Println(movie)
+		}
 	}
+
 }
