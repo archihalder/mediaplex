@@ -23,17 +23,17 @@ func Crawl(path string) error {
 		if entry.IsDir() {
 			newPath := filepath.Join(path, entry.Name())
 
-			files, err := os.ReadDir(newPath)
+			_, err := os.ReadDir(newPath)
 
 			if err != nil {
 				return err
 			}
 
-			for _, file := range files {
-				ext := strings.ToLower(filepath.Ext(file.Name()))
-				if supportedFormats[ext] {
-					fmt.Println(file.Name())
-				}
+			Crawl(newPath)
+		} else {
+			ext := strings.ToLower(filepath.Ext(entry.Name()))
+			if supportedFormats[ext] {
+				fmt.Println(entry.Name())
 			}
 		}
 	}
