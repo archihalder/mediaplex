@@ -1,6 +1,6 @@
 # MediaPlex
 
-An interface for your local media such as movies, TV shows, etc.
+An interface for your local media such as movies, TV shows (upcoming), etc.
 
 ## Getting Started
 
